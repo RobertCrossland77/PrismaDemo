@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Artist {
+  // Fields
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  // Relations
+  albums ArtistAlbums[] 
+}
+
+model Album {
+  // Fields
+  id Int @id @default(autoincrement())
+  title String
+  release_date DateTime?
+
+  // Relations
+  artists ArtistAlbums[]
+  songs Song[]
+}
+
+model ArtistAlbums {
+  // Relations
+  artist Artist @relation(fields: [artist_id], references: [id])
+  artist_id Int
+
+  album Album @relation(fields: [album_id], references: [id])
+  album_id Int
+
+  // Definitions
+  @@id([artist_id, album_id])
+}
+
+model Song {
+  // Fields
+  id Int @id @default(autoincrement())
+  name String
+
+  // Relations
+  album Album @relation(fields: [album_id], references: [id])
+  album_id Int
+
+  lyrics Lyric?
+}
+
+model Lyric {
+  // Fields
+  id Int @id @default(autoincrement())
+  content String
+
+  // Relations
+  song Song @relation(fields: [song_id], references: [id])
+  song_id Int 
+}
