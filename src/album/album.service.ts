@@ -20,7 +20,7 @@ export class AlbumService {
       cursor?: Prisma.AlbumWhereUniqueInput;
       where?: Prisma.AlbumWhereInput;
       orderBy?: Prisma.AlbumOrderByWithRelationInput;
-    }): Promise<Album[]> => {
+    }): Promise<Array<Album>> => {
       const { skip, take, cursor, where, orderBy } = params;
 
       return this.prisma.album.findMany({
@@ -44,7 +44,9 @@ export class AlbumService {
       });
     }
   
-    //async deleteUser(where: Prisma.AlbumWhereUniqueInput): Promise<Album> {
-    //  return this.prisma.album.delete({});
-    //}
+    async deleteAlbum(where: Prisma.AlbumWhereUniqueInput): Promise<Album> {
+      return this.prisma.album.delete({
+        where
+      });
+    }
 }

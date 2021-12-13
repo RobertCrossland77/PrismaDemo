@@ -25,25 +25,25 @@ export class AlbumController {
   }
 
   @Get()
-  async GetAll() {
+  async GetAll(): Promise<Array<AlbumModel>> {
     return this.albumService.albums({});
   }
 
   @Get(':id')
-  async GetById(@Param('id') id: string) {
+  async GetById(@Param('id') id: string): Promise<AlbumModel> {
     return this.albumService.album({ id: Number(id) });
   }
 
   @Put(':id')
-  async Update(@Param('id') id: string, album: Omit<Partial<AlbumModel>, 'id'>) {
+  async Update(@Param('id') id: string, album: Omit<Partial<AlbumModel>, 'id'>): Promise<AlbumModel> {
     return this.albumService.updateAlbum({
       where: { id: Number(id) },
       data: album
-    })
+    });
   }
 
   @Delete(':id')
-  async Delete() {
-
+  async Delete(@Param('id') id: string): Promise<AlbumModel> {
+    return this.albumService.deleteAlbum({ id: Number(id)});
   }
 }

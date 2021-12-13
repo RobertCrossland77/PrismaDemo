@@ -13,7 +13,7 @@ model Artist {
   name String @unique
 
   // Relations
-  albums ArtistAlbums[] 
+  albums ArtistAlbums[]
 }
 
 model Album {
