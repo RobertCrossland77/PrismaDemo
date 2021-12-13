@@ -14,6 +14,9 @@ model Artist {
 
   // Relations
   albums ArtistAlbums[]
+
+  // Mappings
+  @@map("artists")
 }
 
 model Album {
@@ -25,6 +28,9 @@ model Album {
   // Relations
   artists ArtistAlbums[]
   songs Song[]
+
+  // Mappings
+  @@map("albums")
 }
 
 model ArtistAlbums {
@@ -37,6 +43,9 @@ model ArtistAlbums {
 
   // Definitions
   @@id([artist_id, album_id])
+
+  // Mappings
+  @@map("artist_albums")
 }
 
 model Song {
@@ -49,6 +58,9 @@ model Song {
   album_id Int
 
   lyrics Lyric?
+
+  // Mappings
+  @@map("songs")
 }
 
 model Lyric {
@@ -58,5 +70,8 @@ model Lyric {
 
   // Relations
   song Song @relation(fields: [song_id], references: [id])
-  song_id Int 
+  song_id Int
+
+  // Mappings
+  @@map("lyrics")
 }
