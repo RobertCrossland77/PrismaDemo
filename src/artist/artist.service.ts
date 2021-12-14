@@ -22,7 +22,7 @@ export class ArtistService {
     orderBy?: Prisma.ArtistOrderByWithRelationInput;
   }): Promise<Array<Artist>> => {
     const { skip, take, cursor, where, orderBy } = params;
-
+    
     return this.prisma.artist.findMany({
       skip,
       take,

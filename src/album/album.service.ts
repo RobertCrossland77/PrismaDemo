@@ -8,7 +8,7 @@ export class AlbumService {
   
   createAlbum = async(data: Prisma.AlbumCreateInput): Promise<Album> =>
     this.prisma.album.create({ data });
-  
+
   album = async(albumWhereUniqueInput: Prisma.AlbumWhereUniqueInput): Promise<Album | null> => 
     this.prisma.album.findUnique({
       where: albumWhereUniqueInput
@@ -22,7 +22,7 @@ export class AlbumService {
     orderBy?: Prisma.AlbumOrderByWithRelationInput;
   }): Promise<Array<Album>> => {
     const { skip, take, cursor, where, orderBy } = params;
-
+    console.log(`skip: ${skip}, take: ${take}, cursor: ${cursor}, where: ${where}, orderBy: ${orderBy}`)
     return this.prisma.album.findMany({
       skip,
       take,

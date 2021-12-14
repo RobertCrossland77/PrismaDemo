@@ -25,8 +25,14 @@ export class AlbumController {
   }
 
   @Get()
-  async GetAll(): Promise<Array<AlbumModel>> {
-    return this.albumService.albums({});
+  async GetAll(@Param('skip') skip?: number, @Param('take') take?: number, @Param('name') title?: string): Promise<Array<AlbumModel>> {
+    return this.albumService.albums({
+      skip: skip,
+      take: take,
+      where: {
+        title: title 
+      }
+    });
   }
 
   @Get(':id')

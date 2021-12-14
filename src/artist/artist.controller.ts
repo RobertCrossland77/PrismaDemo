@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { Artist as ArtistModel } from '@prisma/client';
 
@@ -16,8 +16,14 @@ export class ArtistController {
   }
 
   @Get()
-  async GetAll(): Promise<Array<ArtistModel>> {
-    return this.artistService.artists({});
+  async GetAll(@Query('skip') skip?: string, @Query('take') take?: string, @Query('name') nameSearch?: string): Promise<Array<ArtistModel>> {
+    return this.artistService.artists({
+      skip: skip && skip.length > 0 ? Number(skip) : undefined,
+      take: take && take.length > 0 ? Number(take) : undefined,
+      where: {
+        name: { contains: nameSearch }
+      }
+    });
   }
 
   @Get(':id')
@@ -26,10 +32,11 @@ export class ArtistController {
   }
 
   @Put(':id')
-  async Update(@Param('id') id: string, album: Omit<Partial<ArtistModel>, 'id'>): Promise<ArtistModel> {
+  async Update(@Param('id') id: string, @Body() artist: Omit<Partial<ArtistModel>, 'id'>): Promise<ArtistModel> {
+    console.log(`artist: ${artist}`)
     return this.artistService.updateArtist({
       where: { id: Number(id) },
-      data: album
+      data: artist
     });
   }
 
