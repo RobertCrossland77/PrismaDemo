@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Param, Post, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Put, Param, Post, Delete, Query } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { Album as AlbumModel } from '@prisma/client';
 
@@ -7,31 +7,31 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Post()
-  async GetAlbumById(
-    @Body() postData: { title: string, release_date?: Date | string, artistId: number }
+  async CreateAlbum(
+    @Body() postData: { title: string, release_date?: Date | string, artist_name: string }
   ): Promise<AlbumModel> {
-    const { title, release_date, artistId } = postData;
+    const { title, release_date, artist_name } = postData;
 
     return this.albumService.createAlbum({
       title,
       release_date,
-
       artists: {
-        create: [
-          { artist_id: artistId }
+        connect: [
+          {name: artist_name}
         ]
       }
     });
   }
 
+
   @Get()
-  async GetAll(@Param('skip') skip?: number, @Param('take') take?: number, @Param('name') title?: string): Promise<Array<AlbumModel>> {
+  async GetAll(@Query('skip') skip?: string, @Query('take') take?: string, @Query('title') title?: string): Promise<Array<AlbumModel>> {
     return this.albumService.albums({
-      skip: skip,
-      take: take,
+      skip: skip && skip.length > 0 && Number(skip) !== NaN ? Number(skip) : undefined,
+      take: take && take.length > 0 && Number(take) !== NaN ? Number(take) : undefined,
       where: {
-        title: title 
-      }
+        title: { contains: title }
+      },
     });
   }
 
@@ -41,7 +41,7 @@ export class AlbumController {
   }
 
   @Put(':id')
-  async Update(@Param('id') id: string, album: Omit<Partial<AlbumModel>, 'id'>): Promise<AlbumModel> {
+  async Update(@Param('id') id: string, @Body() album: Omit<Partial<AlbumModel>, 'id'>): Promise<AlbumModel> {
     return this.albumService.updateAlbum({
       where: { id: Number(id) },
       data: album

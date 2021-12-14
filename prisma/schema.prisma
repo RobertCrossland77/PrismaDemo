@@ -13,7 +13,7 @@ model Artist {
   name String @unique
 
   // Relations
-  albums ArtistAlbums[]
+  albums Album[]
 
   // Mappings
   @@map("artists")
@@ -22,30 +22,15 @@ model Artist {
 model Album {
   // Fields
   id Int @id @default(autoincrement())
-  title String
+  title String @unique
   release_date DateTime?
 
   // Relations
-  artists ArtistAlbums[]
+  artists Artist[]
   songs Song[]
 
   // Mappings
   @@map("albums")
-}
-
-model ArtistAlbums {
-  // Relations
-  artist Artist @relation(fields: [artist_id], references: [id])
-  artist_id Int
-
-  album Album @relation(fields: [album_id], references: [id])
-  album_id Int
-
-  // Definitions
-  @@id([artist_id, album_id])
-
-  // Mappings
-  @@map("artist_albums")
 }
 
 model Song {

@@ -7,7 +7,7 @@ export class SongController {
   constructor(private readonly songService: SongService) {}
 
   @Post()
-  async GetAlbumById(
+  async CreateSong(
     @Body() postData: { name: string, lyrics?: string, albumId: string }
   ): Promise<SongModel> {
     const { name, albumId, lyrics } = postData;
