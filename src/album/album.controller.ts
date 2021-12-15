@@ -23,7 +23,6 @@ export class AlbumController {
     });
   }
 
-
   @Get()
   async GetAll(@Query('skip') skip?: string, @Query('take') take?: string, @Query('title') title?: string): Promise<Array<AlbumModel>> {
     return this.albumService.albums({

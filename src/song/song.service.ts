@@ -6,8 +6,10 @@ import { Song, Prisma } from '@prisma/client';
 export class SongService {
   constructor(private prisma: PrismaService) {}
     
-  createSong = async(data: Prisma.SongCreateInput): Promise<Song> =>
-    this.prisma.song.create({ data });
+  createSong = async(data: Prisma.SongCreateInput): Promise<Song> => {
+    console.log(JSON.stringify(data))
+    return this.prisma.song.create({ data });
+  }
     
   song = async(songWhereUniqueInput: Prisma.SongWhereUniqueInput): Promise<Song | null> => 
     this.prisma.song.findUnique({

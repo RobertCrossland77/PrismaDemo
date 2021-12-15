@@ -8,20 +8,16 @@ export class SongController {
 
   @Post()
   async CreateSong(
-    @Body() postData: { name: string, lyrics?: string, albumId: string }
+    @Body() postData: { name: string, lyrics?: string, album_id: string }
   ): Promise<SongModel> {
-    const { name, albumId, lyrics } = postData;
-  
+    const { name, album_id } = postData;
+    
     return this.songService.createSong({ 
       name,
       album: {
-        connect: { id: Number(albumId) }
+        connect: { id: Number(album_id) }
       },
-      lyrics: {
-        create: {
-          content: lyrics
-        }
-      }
+      lyrics: postData.lyrics ? { create: { content: postData.lyrics } } : undefined
     });
   }
   

@@ -29,6 +29,17 @@ export class ArtistService {
       cursor,
       where,
       orderBy,
+      include: {
+        albums: {
+          include: {
+            songs: {
+              include: {
+                lyrics: true
+              }
+            }
+          }
+        }
+      }
     });
   }
 
